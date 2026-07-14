@@ -1,0 +1,45 @@
+int compare(const void* a, const void* b) {
+    return (*(int*)a - *(int*)b);
+}
+
+int* largestDivisibleSubset(int* nums, int numsSize, int* returnSize) {
+    if (numsSize == 0) {
+        *returnSize = 0;
+        return NULL;
+    }
+    qsort(nums, numsSize, sizeof(int), compare);
+    int* dp = (int*)malloc(numsSize * sizeof(int));
+    int* parent = (int*)malloc(numsSize * sizeof(int));
+    int max_size = 1;
+    int max_index = 0;
+    for (int i = 0; i < numsSize; i++) {
+        dp[i] = 1;
+        parent[i] = -1;
+    }
+    for (int i = 0; i < numsSize; i++) {
+        for (int j = 0; j < i; j++) {
+            if (nums[i] % nums[j] == 0) {
+                if (dp[j] + 1 > dp[i]) {
+                    dp[i] = dp[j] + 1;
+                    parent[i] = j;
+                }
+            }
+        }
+        if (dp[i] > max_size) {
+            max_size = dp[i];
+            max_index = i;
+        }
+    }
+    *returnSize = max_size;
+    int* result = (int*)malloc(max_size * sizeof(int));
+    
+    int curr = max_index;
+    for (int i = max_size - 1; i >= 0; i--) {
+        result[i] = nums[curr];
+        curr = parent[curr];
+    }
+    free(dp);
+    free(parent);
+
+    return result;
+}
