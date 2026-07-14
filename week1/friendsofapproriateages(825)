@@ -1,0 +1,24 @@
+int numFriendRequests(int* ages, int agesSize) {
+    int age_counts[121]={0};
+    for(int i=0;i<agesSize;i++){
+        age_counts[ages[i]]++;
+    }   
+    int total=0;
+    for(int i=1;i<=120;i++){
+        if(age_counts[i]==0)
+            continue;
+        for(int j=1;j<=120;j++){
+            if(age_counts[i]==0)
+                continue;
+            if(j>0.5*i+7 && j<=i){
+                if(i==j){
+                    total+=age_counts[i]*(age_counts[i]-1);
+                }
+                else{
+                    total+=age_counts[i]*age_counts[j];
+                }
+            }
+        }
+    }
+    return total;
+}
