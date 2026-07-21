@@ -1,0 +1,17 @@
+class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+
+        HashMap<Integer, Integer> frequencies = new HashMap<>();
+        List<Integer> result = new ArrayList<>();
+
+        for(int count:nums ){
+            frequencies.put(count,frequencies.getOrDefault(count,0)+1);
+        }
+        
+        for(int num:frequencies.keySet()){
+            if(frequencies.get(num)==2)
+                result.add(num);
+        }
+        return result;
+    }
+}
